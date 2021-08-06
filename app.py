@@ -1,6 +1,7 @@
 # pip install Flask-SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
+from datetime import datetime
 
 app = Flask(__name__)  # ввів "app" екземпляр програми
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db' # створив в конфігурації спеціальну константу 'SQLALCHEMY_DATABASE_URI', яка визначає вид СУБД, яка буде використовуватися на проекті
