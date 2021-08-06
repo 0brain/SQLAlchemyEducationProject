@@ -19,5 +19,17 @@ class Users(db.Model): # ввів клас Users, який наслідуєть�
     def __repr__(self): # В кінці опису класу йде функція __repr__, яка визначає спосіб відображення класу в консолі. З її допомогою ми будемо виводити клас у вигляді рядка формату: <Users ідентифікатор>
         return f"<users {self.id}>"
 
+
+class Profiles(db.Model):   # ввів клас Profiles, який теж наслідується від класу Model.
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    old = db.Column(db.Integer)
+    city = db.Column(db.String(100))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return f"<profiles {self.id}>"
+
+
 if __name__ == "__main__":
     app.run(debug=True) # запуск веб-сервера
