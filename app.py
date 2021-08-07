@@ -1,6 +1,6 @@
 # pip install Flask-SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
+from flask import Flask, render_template
 from datetime import datetime
 
 app = Flask(__name__)  # ввів "app" екземпляр програми
