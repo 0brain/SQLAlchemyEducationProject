@@ -31,6 +31,10 @@ class Profiles(db.Model):   # ввів клас Profiles, який теж нас
         return f"<profiles {self.id}>"
 
 
+@app.route("/index")
+def index():
+    return render_template("index.html", title="Головна")
+
 @app.route("/register", methods=("POST", "GET"))  # по адресу "/register" будемо отримувати дані по "POST" і "GET" запиту
 def register(): # ввів функцію для опрацювання адресу "/register", яка буде відображати шаблон "register.html"
     return render_template("register.html", title="Реєстрація")
