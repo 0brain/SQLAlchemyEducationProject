@@ -31,7 +31,7 @@ class Profiles(db.Model):   # ввів клас Profiles, який теж нас
         return f"<profiles {self.id}>"
 
 
-@app.route("/index")
+@app.route("/")
 def index():
     return render_template("index.html", title="Головна")
 
