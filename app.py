@@ -1,6 +1,6 @@
 # pip install Flask-SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from datetime import datetime
 
 app = Flask(__name__)  # ввів "app" екземпляр програми
@@ -37,6 +37,22 @@ def index():
 
 @app.route("/register", methods=("POST", "GET"))  # по адресу "/register" будемо отримувати дані по "POST" і "GET" запиту
 def register(): # ввів функцію для опрацювання адресу "/register", яка буде відображати шаблон "register.html"
+    if request.method == "POST": # перевіряємо, що дані прийши по пост запиту
+        try:
+            hash = generate_password_hash(request.form['psw'])  # з форми ми беремо пароль, який користувач ввів при реємтрації і генеруємо для нього хеш
+            u = Users(email=request.form['email'], psw=hash)  # створюємо екземпляр класу Users і через параметри email і psw передаємо дані екземпляру класу Users. В результаті створюється об'єкт з даними по email і паролю, який і являє собою майбутню запис в таблиці users.
+            db.session.add(u)  # щоб добавити сформований запис в таблицю відбувається звернення до спеціального об'єкту session - сесії БД і в неї додається запис за допомогою методу add. Як параметр цей метод приймає посилання на об'єкт класу Users.
+            db.session.flush()  # виконується метод flush, який з сесії переміщує запис в таблицю. Дана таблиця все ще в памяті, тобто зміни не внесені.
+
+            p = Profiles(name=request.form['name'], old=request.form['old'],
+                         city=request.form['city'], user_id=u.id) # Якщо помилок не виникає, то формується наступний екземпляр класу Profiles з набором даних з форми. Додатково береться значення u.id, яке сформувалося після методу flush при додаванні запису в таблицю users. Саме тому ми викликали метод flush.
+            db.session.add(p)  # Далі, запис поміщається в сесію.
+            db.session.commit() # І викликається метод commit, який вже фізично змінює файли БД і зберігає зміни в таблицях.
+        except:
+            db.session.rollback() # Якщо при додаванні в базу даних виникли помилки, то ми відкатуємо її до попереднього стану.
+            print("Помилка додавання в БД") # І виводимо повідомлення про помилку.
+
+        return redirect(url_for('index'))
     return render_template("register.html", title="Реєстрація")
 
 if __name__ == "__main__":
