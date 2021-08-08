@@ -1,6 +1,7 @@
 # pip install Flask-SQLAlchemy
+from werkzeug.security import generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
 
 app = Flask(__name__)  # ввів "app" екземпляр програми
