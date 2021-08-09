@@ -36,7 +36,14 @@ class Profiles(db.Model):   # ввів клас Profiles, який теж нас
 
 @app.route("/")
 def index():
-    return render_template("index.html", title="Головна")
+    info = [] # даний список буде поміщати користувачів сайту
+    try:
+        info = Users.query.all()  # вибираємо всіх користувачів з таблиці
+    except:
+        print("Помилка читання з БД")
+
+    return render_template("index.html", title="Головна", list=info)  # передаємо список в шаблон головної сторінки
+
 
 @app.route("/register", methods=("POST", "GET"))  # по адресу "/register" будемо отримувати дані по "POST" і "GET" запиту
 def register(): # ввів функцію для опрацювання адресу "/register", яка буде відображати шаблон "register.html"
